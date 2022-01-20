@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const transac = require("./models/transactions.js");
+const transactions = require("./models/transactions.js");
 require("dotenv").config();
 const PORT = process.env.PORT;
 const cors = require("cors");
@@ -10,26 +10,26 @@ app.use(cors());
 app.get("/", (req, res)=>{
     res.send("<h1>Welcome to the Budget App <h1>")
 });
-app.get("/transac", (req,res)=>{
-    res.json(transac)
+app.get("/transactions", (req,res)=>{
+    res.json(transactions)
 });
-app.get("/transac/:index", (req,res)=>{
+app.get("/transactions/:index", (req,res)=>{
     const {index} = req.params;
-    if(!transac[index]){
+    if(!transactions[index]){
         res.redirect("/*")  
     }else{
-        res.json(transac[index])
+        res.json(transactions[index])
     }
 })
 
-app.post("/transac", (req,res)=>{
-    transac.push(req.body)
-    res.json(transac[transac.length-1])
+app.post("/transactions", (req,res)=>{
+    transactions.push(req.body)
+    res.json(transactions[transactions.length-1])
 })
-app.put("/transac/:index", (req,res)=>{
+app.put("/transactions/:index", (req,res)=>{
     const {index} = req.params;
     const {date, name, amount, from} = req.body;
-    if(!transac[index]){
+    if(!transactions[index]){
         res.redirect("/*")
     }
      else if(isNaN(amount)){
@@ -38,18 +38,18 @@ app.put("/transac/:index", (req,res)=>{
         });
     }
     else if(date && name && amount && from){
-        transac[index] = {date, name, amount, from};
-        res.json(transac[index])
+        transactions[index] = {date, name, amount, from};
+        res.json(transactions[index])
     } else {
         res.status(422).json({
             error: "Please provide all fields"
         });
     }
 });
-app.delete("/transac/:index", (req, res)=>{
+app.delete("/transactions/:index", (req, res)=>{
     const{index} = req.params;
-    if(transac[index]){
-        let removed = transac.splice(index,1)
+    if(transactions[index]){
+        let removed = transactions.splice(index,1)
         res.json(removed)
     } else {
         res.redirect("*")
