@@ -15,15 +15,12 @@ app.get("/transac", (req,res)=>{
 });
 app.get("/transac/:index", (req,res)=>{
     const {index} = req.params;
-    if(transac[index]){
-        res.json(transac[index])
+    if(!transac[index]){
+        res.redirect("/*")  
     }else{
-        res.redirect("*")
+        res.json(transac[index])
     }
 })
-app.get("*", (req, res)=>{
-    res.status(404).json({error: "Page not found"});
-});
 
 app.post("/transac", (req,res)=>{
     transac.push(req.body)
@@ -31,16 +28,16 @@ app.post("/transac", (req,res)=>{
 })
 app.put("/transac/:index", (req,res)=>{
     const {index} = req.params;
-    if(!transac[index]){
-        res.redirect("*")
-    }
     const {date, name, amount, from} = req.body;
-    if(isNaN(amount)){
+    if(!transac[index]){
+        res.redirect("/*")
+    }
+     else if(isNaN(amount)){
         res.status(422).json({
             error: "Please enter a numeric value"
         });
     }
-    if(date && name && (typeof amount === "number") && from){
+    else if(date && name && amount && from){
         transac[index] = {date, name, amount, from};
         res.json(transac[index])
     } else {
@@ -58,6 +55,11 @@ app.delete("/transac/:index", (req, res)=>{
         res.redirect("*")
     }
 })
+
+app.get("*", (req, res)=>{
+    res.status(404).json({error: "Page not found"});
+});
+
 
 
 app.listen(PORT, ()=>{
