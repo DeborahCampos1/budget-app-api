@@ -25,9 +25,9 @@ module.exports = [
     },
     {
       date: "December 9",
-      name: "Income",
+      name: "Direct Deposit",
       amount: 1000,
-      from: "Coinbased"
+      from: "Coinbase"
     },
     {
       date: "December 9",
@@ -43,9 +43,9 @@ module.exports = [
     },
     {
         date: "December 16",
-        name: "Income",
+        name: "Direct Deposit",
         amount: 1000,
-        from: "Coinbased"
+        from: "Coinbase"
     },
     {
         date: "December 16",
